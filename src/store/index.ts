@@ -4,6 +4,8 @@ import { persistReducer, persistStore } from "redux-persist";
 
 // reducers
 import authReducer from "./slices/auth";
+import coursesReducer from "./slices/course";
+import myCoursesReducer from "./slices/my-courses";
 
 const persistConfig = {
   key: "root",
@@ -12,6 +14,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  courses: coursesReducer,
+  myCourses: myCoursesReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
