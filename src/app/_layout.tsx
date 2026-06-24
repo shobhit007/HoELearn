@@ -1,5 +1,6 @@
 import "../global.css";
 
+import Notifications from "@/components/notifications/notifications";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -12,6 +13,7 @@ export default function RootLayout() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <SafeAreaProvider>
+          <Notifications />
           <Stack screenOptions={{ headerShown: false }} />
           <StatusBar style="dark" />
         </SafeAreaProvider>

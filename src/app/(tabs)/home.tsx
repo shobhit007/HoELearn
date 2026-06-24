@@ -125,7 +125,6 @@ export default function HomeScreen() {
         data={filteredCourses}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
-        estimatedItemSize={320}
         contentContainerStyle={{
           paddingTop: 8,
           paddingBottom: 32,

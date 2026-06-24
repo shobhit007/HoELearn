@@ -39,11 +39,6 @@ export default function BookmarksScreen() {
         >
           Bookmarked courses
         </ThemedText>
-        <ThemedText type="small" style={{ color: "#64748B", marginTop: 6 }}>
-          {bookmarked.length === 1
-            ? "1 course saved"
-            : `${bookmarked.length} courses saved`}
-        </ThemedText>
       </View>
     ),
     [bookmarked.length],
@@ -75,7 +70,6 @@ export default function BookmarksScreen() {
         data={bookmarked}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
-        estimatedItemSize={320}
         contentContainerStyle={{
           paddingTop: 8,
           paddingBottom: 32,
