@@ -7,12 +7,14 @@ type CoursesErrorStateProps = {
   message: string;
   onRetry: () => void;
   loading?: boolean;
+  title?: string;
 };
 
 export default function CoursesErrorState({
   message,
   onRetry,
   loading = false,
+  title = "Couldn't load courses",
 }: CoursesErrorStateProps) {
   return (
     <View className="flex-1 items-center justify-center px-8">
@@ -20,7 +22,7 @@ export default function CoursesErrorState({
         <Ionicons name="cloud-offline-outline" size={32} color="#EF4444" />
       </View>
       <ThemedText type="smallBold" style={{ textAlign: "center" }}>
-        Couldn&apos;t load courses
+        {title}
       </ThemedText>
       <ThemedText
         type="small"

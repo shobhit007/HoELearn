@@ -1,5 +1,11 @@
-import { CourseItem } from "@/store/slices/course";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+export interface CourseItem {
+  id: string;
+  thumbnail: string;
+  title: string;
+  description: string;
+}
 
 export interface MyCoursesState {
   enrolled: CourseItem[];
@@ -21,11 +27,6 @@ const myCoursesSlice = createSlice({
       }
       state.enrolled.push(action.payload);
     },
-    removeBookmarkedCourse: (state, action: PayloadAction<{ id: string }>) => {
-      state.bookmarked = state.bookmarked.filter(
-        (course) => course.id !== action.payload.id,
-      );
-    },
     toggleBookmarkedCourse: (state, action: PayloadAction<CourseItem>) => {
       const index = state.bookmarked.findIndex(
         (course) => course.id === action.payload.id,
@@ -40,10 +41,7 @@ const myCoursesSlice = createSlice({
   },
 });
 
-export const {
-  addNewEnrolledCourse,
-  removeBookmarkedCourse,
-  toggleBookmarkedCourse,
-} = myCoursesSlice.actions;
+export const { addNewEnrolledCourse, toggleBookmarkedCourse } =
+  myCoursesSlice.actions;
 
 export default myCoursesSlice.reducer;

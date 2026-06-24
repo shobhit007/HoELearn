@@ -4,11 +4,12 @@ import SearchBar from "@/components/courses/search-bar";
 import { ThemedText } from "@/components/themed-text";
 import ErrorBanner from "@/components/ui/error-banner";
 import { useCourses } from "@/hooks/useCourses";
-import { CourseItem } from "@/store/slices/course";
+import { CourseItem } from "@/store/slices/my-courses";
 import {
   LegendList,
   type LegendListRenderItemProps,
 } from "@legendapp/list/react-native";
+import { router } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 import { ActivityIndicator, RefreshControl, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -38,11 +39,18 @@ export default function HomeScreen() {
     );
   }, [courses, searchQuery]);
 
+  const onhandlePress = useCallback((id: string) => {
+    router.navigate({
+      pathname: "/course/[id]",
+      params: { id },
+    });
+  }, []);
+
   const renderItem = useCallback(
     ({ item }: LegendListRenderItemProps<CourseItem>) => (
-      <CourseCard course={item} />
+      <CourseCard course={item} handlePress={onhandlePress} />
     ),
-    [],
+    [onhandlePress],
   );
 
   const keyExtractor = useCallback((item: CourseItem) => item.id, []);

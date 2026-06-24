@@ -1,7 +1,7 @@
 import axiosInstance from "@/config/axios";
-import { CourseItem } from "@/store/slices/course";
+import { CourseItem } from "@/store/slices/my-courses";
 
-type RawCourse = {
+export type RawCourse = {
   id: number | string;
   title?: string;
   description?: string;
@@ -12,7 +12,7 @@ type RawCourse = {
   brand?: string;
 };
 
-function mapCourse(raw: RawCourse): CourseItem {
+export function toCourseItem(raw: RawCourse): CourseItem {
   return {
     id: String(raw.id),
     title: raw.title?.trim() ?? "Untitled course",
@@ -21,8 +21,18 @@ function mapCourse(raw: RawCourse): CourseItem {
   };
 }
 
+function mapCourse(raw: RawCourse): CourseItem {
+  return toCourseItem(raw);
+}
+
 export const getCourses = async (): Promise<CourseItem[]> => {
   const response = await axiosInstance.get("/public/randomproducts");
   const courses: RawCourse[] = response.data?.data?.data ?? [];
   return courses.map(mapCourse);
+};
+
+export const getCourseById = async (id: string): Promise<RawCourse | null> => {
+  const response = await axiosInstance.get(`/public/randomproducts/${id}`);
+  const course: RawCourse = response.data?.data ?? null;
+  return course;
 };

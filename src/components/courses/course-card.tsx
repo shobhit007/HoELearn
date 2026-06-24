@@ -1,17 +1,17 @@
 import { ThemedText } from "@/components/themed-text";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { CourseItem } from "@/store/slices/course";
-import { toggleBookmarkedCourse } from "@/store/slices/my-courses";
+import { CourseItem, toggleBookmarkedCourse } from "@/store/slices/my-courses";
 import { Ionicons } from "@expo/vector-icons";
-import { Image } from "expo-image";
 import { memo } from "react";
 import { Pressable, View } from "react-native";
+import CourseThumbnail from "./course-thumbnail";
 
 type CourseCardProps = {
   course: CourseItem;
+  handlePress: (id: string) => void;
 };
 
-function CourseCard({ course }: CourseCardProps) {
+function CourseCard({ course, handlePress }: CourseCardProps) {
   const dispatch = useAppDispatch();
   const isBookmarked = useAppSelector((state) =>
     state.myCourses.bookmarked.some(
@@ -34,17 +34,15 @@ function CourseCard({ course }: CourseCardProps) {
         shadowRadius: 12,
         elevation: 3,
       }}
+      onPress={() => handlePress(course.id)}
     >
       <View
         className="relative w-full bg-primaryLight"
         style={{ aspectRatio: 16 / 9 }}
       >
         {hasThumbnail ? (
-          <Image
-            source={{ uri: course.thumbnail }}
-            style={{ width: "100%", height: "100%" }}
-            contentFit="cover"
-            transition={250}
+          <CourseThumbnail
+            thumbnail={course.thumbnail}
             recyclingKey={course.id}
           />
         ) : (

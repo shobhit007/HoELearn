@@ -1,21 +1,29 @@
 import CourseCard from "@/components/courses/course-card";
 import { ThemedText } from "@/components/themed-text";
 import { useAppSelector } from "@/hooks/redux";
-import { CourseItem } from "@/store/slices/course";
+import { CourseItem } from "@/store/slices/my-courses";
 import { Ionicons } from "@expo/vector-icons";
 import {
   LegendList,
   type LegendListRenderItemProps,
 } from "@legendapp/list/react-native";
+import { router } from "expo-router";
 import { useCallback } from "react";
 import { View } from "react-native";
 
 export default function BookmarksScreen() {
   const { bookmarked } = useAppSelector((state) => state.myCourses);
 
+  const handlePress = useCallback((courseId: string) => {
+    router.navigate({
+      pathname: "/course/[id]",
+      params: { id: courseId },
+    });
+  }, []);
+
   const renderItem = useCallback(
     ({ item }: LegendListRenderItemProps<CourseItem>) => (
-      <CourseCard course={item} />
+      <CourseCard course={item} handlePress={handlePress} />
     ),
     [],
   );

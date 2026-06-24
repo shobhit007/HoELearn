@@ -1,5 +1,5 @@
 import { getCourses } from "@/api/course";
-import { CourseItem } from "@/store/slices/course";
+import { CourseItem } from "@/store/slices/my-courses";
 import { getApiErrorMessage } from "@/utils/errors";
 import { useCallback, useEffect, useState } from "react";
 
