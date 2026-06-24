@@ -1,56 +1,206 @@
-# Welcome to your Expo app 👋
+# HoELearn - LMS Mobile Application
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A modern Learning Management System (LMS) mobile application built with Expo, React Native, TypeScript, Redux Toolkit, and Expo Router.
 
-## Get started
+## Overview
 
-1. Install dependencies
+HoELearn allows users to discover courses, bookmark content, enroll in courses, view course details, access learning content through WebView, and manage their profile. The application demonstrates modern mobile development practices including authentication, state management, API integration, offline awareness, local persistence, and native device capabilities.
 
-   ```bash
-   npm install
-   ```
+---
 
-2. Start the app
+## Features
 
-   ```bash
-   npx expo start
-   ```
+### Authentication
 
-In the output, you'll find options to open the app in a
+- User Registration
+- User Login
+- Secure authentication token storage using Expo SecureStore
+- Automatic session restoration on app launch
+- Protected routes and authentication guards
+- Logout functionality
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Course Management
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- Browse available courses
+- Search and filter courses
+- Pull-to-refresh support
+- View detailed course information
+- Enroll in courses
+- Bookmark courses for later access
 
-## Get a fresh project
+### WebView Integration
 
-When you're ready, run:
+- Course content displayed inside WebView
+- Native to WebView communication
+- WebView to Native communication
 
-```bash
-npm run reset-project
+### User Profile
+
+- Profile information display
+- Profile image upload using Expo Image Picker
+- Enrolled course statistics
+- Bookmarked course statistics
+
+### Notifications
+
+- Local notifications using Expo Notifications
+- Bookmark milestone notifications
+- Scheduled reminder notifications
+
+### Network Handling
+
+- Axios-based API layer
+- Request and response interceptors
+- Timeout handling
+- Retry mechanism for failed requests
+- User-friendly error messages
+- Offline connection awareness banner
+
+---
+
+## Technical Stack
+
+### Frontend
+
+- React Native
+- Expo
+- TypeScript
+- Expo Router
+
+### State Management
+
+- Redux Toolkit
+- React Redux
+
+### Styling
+
+- NativeWind (Tailwind CSS)
+
+### Networking
+
+- Axios
+
+### Storage
+
+- Expo SecureStore
+- AsyncStorage
+
+### Native Features
+
+- Expo Notifications
+- Expo Image Picker
+- React Native WebView
+- NetInfo
+
+---
+
+## Project Structure
+
+```text
+app/
+├── (auth)/
+│   ├── login.tsx
+│   └── register.tsx
+│
+├── (tabs)/
+│   ├── home.tsx
+│   ├── bookmarks.tsx
+│   └── profile.tsx
+│
+├── course/
+│   └── [id].tsx
+│
+├── mycourses.tsx
+│
+├── _layout.tsx
+└── index.tsx
+
+src/
+├── components/
+├── api/
+├── hooks/
+├── services/
+├── store/
+├── constants/
+├── config/
+└── utils/
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-### Other setup steps
+## Architecture Highlights
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+### Authentication Flow
 
-## Learn more
+- Secure token storage using Expo SecureStore
+- Redux state hydration on app launch
+- Route protection using authentication guards
+- Automatic user session restoration
 
-To learn more about developing your project with Expo, look at the following resources:
+### API Layer
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- Centralized Axios instance
+- Request interceptors for authentication
+- Response interceptors for error handling
+- Retry mechanism for failed requests
+- Timeout management
 
-## Join the community
+### State Management
 
-Join our community of developers creating universal apps.
+Redux Toolkit is used to manage:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Authentication state
+- Bookmarked courses
+- Enrolled courses
+
+---
+
+## Installation
+
+### Clone Repository
+
+```bash
+git clone <repository-url>
+cd HoELearn
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Start Development Server
+
+```bash
+npx expo start
+```
+
+### Run Android
+
+```bash
+npx expo run:android
+```
+
+### Run iOS
+
+```bash
+npx expo run:ios
+```
+
+---
+
+## Assumptions
+
+- Public APIs are used to simulate LMS data.
+- Course enrollment is maintained locally.
+- Authentication is implemented using the provided API endpoints and persisted locally.
+- Course content is simulated through WebView-rendered HTML.
+
+---
+
+## Author
+
+Shobhit Saini
+
+React Native Developer
