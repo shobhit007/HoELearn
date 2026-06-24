@@ -4,13 +4,15 @@ import Button from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { clearAuthData } from "@/services/authStorage";
 import { logOut } from "@/store/slices/auth";
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, View } from "react-native";
+import { Alert, Pressable, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ProfileScreen() {
   const { user } = useAppSelector((state) => state.auth);
+  const { enrolled, bookmarked } = useAppSelector((state) => state.myCourses);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -67,6 +69,20 @@ export default function ProfileScreen() {
           <View className="my-3 h-px bg-border" />
           <ProfileRow label="Email" value={user?.email ?? "—"} />
         </View>
+
+        <View className="mt-4 rounded-2xl border border-border bg-card p-4">
+          <ProfileStatRow
+            label="Enrolled courses"
+            count={enrolled.length}
+            onPress={() => router.push("/mycourses")}
+          />
+          <View className="my-3 h-px bg-border" />
+          <ProfileStatRow
+            label="Bookmarked courses"
+            count={bookmarked.length}
+            onPress={() => router.navigate("/(tabs)/bookmarks")}
+          />
+        </View>
       </View>
 
       <View className="px-6 pb-4">
@@ -94,5 +110,30 @@ function ProfileRow({ label, value }: { label: string; value: string }) {
         {value}
       </ThemedText>
     </View>
+  );
+}
+
+function ProfileStatRow({
+  label,
+  count,
+  onPress,
+}: {
+  label: string;
+  count: number;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable
+      className="flex-row items-center justify-between gap-4 active:opacity-70"
+      onPress={onPress}
+    >
+      <ThemedText type="small" style={{ color: "#64748B" }}>
+        {label}
+      </ThemedText>
+      <View className="flex-row items-center gap-2">
+        <ThemedText type="smallBold">{count}</ThemedText>
+        <Ionicons name="chevron-forward" size={16} color="#64748B" />
+      </View>
+    </Pressable>
   );
 }

@@ -12,6 +12,22 @@ export type RawCourse = {
   brand?: string;
 };
 
+export type CourseInstructor = {
+  name: string;
+  avatarUrl: string;
+};
+
+type RawInstructor = {
+  name: {
+    first: string;
+    last: string;
+  };
+  picture: {
+    medium?: string;
+    thumbnail?: string;
+  };
+};
+
 export function toCourseItem(raw: RawCourse): CourseItem {
   return {
     id: String(raw.id),
@@ -36,3 +52,15 @@ export const getCourseById = async (id: string): Promise<RawCourse | null> => {
   const course: RawCourse = response.data?.data ?? null;
   return course;
 };
+
+export async function getInstructors(limit = 4): Promise<CourseInstructor[]> {
+  const response = await axiosInstance.get(
+    `/public/randomusers?page=1&limit=${limit}`,
+  );
+  const users: RawInstructor[] = response.data?.data?.data ?? [];
+
+  return users.map((user) => ({
+    name: `${user.name.first} ${user.name.last}`.trim(),
+    avatarUrl: user.picture?.medium ?? user.picture?.thumbnail ?? "",
+  }));
+}

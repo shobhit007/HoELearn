@@ -1,4 +1,10 @@
-import { getCourseById, RawCourse, toCourseItem } from "@/api/course";
+import {
+  CourseInstructor,
+  getCourseById,
+  getInstructors,
+  RawCourse,
+  toCourseItem,
+} from "@/api/course";
 import BackButton from "@/components/back-button";
 import CoursesErrorState from "@/components/courses/courses-error-state";
 import { ThemedText } from "@/components/themed-text";
@@ -26,6 +32,7 @@ const CourseDetails = () => {
   const [loading, setLoading] = useState(true);
   const [retrying, setRetrying] = useState(false);
   const [courseData, setCourseData] = useState<RawCourse | null>(null);
+  const [instructors, setInstructors] = useState<CourseInstructor[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [notFound, setNotFound] = useState(false);
   const { generateHTML } = useHTML();
@@ -46,8 +53,8 @@ const CourseDetails = () => {
   }, [bookmarked, courseData]);
 
   const htmlContent = useMemo(
-    () => generateHTML(courseData),
-    [courseData, generateHTML],
+    () => generateHTML(courseData, instructors),
+    [courseData, generateHTML, instructors],
   );
 
   const applyWebViewCourseState = useCallback(() => {
@@ -66,6 +73,7 @@ const CourseDetails = () => {
         setError("Course ID is missing.");
         setNotFound(false);
         setCourseData(null);
+        setInstructors([]);
         setLoading(false);
         setRetrying(false);
         return;
@@ -81,17 +89,23 @@ const CourseDetails = () => {
       setNotFound(false);
 
       try {
-        const course = await getCourseById(courseId);
+        const [course, randomInstructors] = await Promise.all([
+          getCourseById(courseId),
+          getInstructors(4).catch(() => [] as CourseInstructor[]),
+        ]);
 
         if (!course) {
           setCourseData(null);
+          setInstructors([]);
           setNotFound(true);
           return;
         }
 
         setCourseData(course);
+        setInstructors(randomInstructors);
       } catch (err) {
         setCourseData(null);
+        setInstructors([]);
         setError(
           getApiErrorMessage(err, "Unable to load course. Please try again."),
         );
@@ -198,10 +212,7 @@ const CourseDetails = () => {
             The course you are looking for does not exist or may have been
             removed.
           </ThemedText>
-          <Button
-            onPress={() => router.back()}
-            className="mt-6 w-full max-w-xs"
-          >
+          <Button onPress={handleBackButton} className="mt-6 w-full max-w-xs">
             <ThemedText
               type="smallBold"
               themeColor="secondary"

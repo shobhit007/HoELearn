@@ -1,4 +1,4 @@
-import { RawCourse } from "@/api/course";
+import { CourseInstructor, RawCourse } from "@/api/course";
 
 export function escapeHtml(value: string) {
   return value
@@ -13,16 +13,34 @@ function getThumbnail(course: RawCourse) {
   return course.thumbnail ?? course.images?.[0] ?? "";
 }
 
-function getInstructorName(course: RawCourse) {
-  return course.brand?.trim() || "Course Instructor";
-}
+function buildInstructorsHtml(instructors: CourseInstructor[]) {
+  if (instructors.length === 0) return "";
 
-function getInstructorAvatarUrl(name: string) {
-  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=208AEF&color=ffffff&size=128&bold=true`;
+  const items = instructors
+    .map((instructor) => {
+      const name = escapeHtml(instructor.name);
+      const avatarUrl = escapeHtml(instructor.avatarUrl);
+
+      return `<div class="instructor-item">
+        <img
+          class="instructor-avatar"
+          src="${avatarUrl}"
+          alt="${name}"
+        />
+        <div class="instructor-name">${name}</div>
+      </div>`;
+    })
+    .join("");
+
+  return `<div class="section-label">Instructors</div>
+    <div class="instructors-row">${items}</div>`;
 }
 
 export default function useHTML() {
-  const generateHTML = (course: RawCourse | null) => {
+  const generateHTML = (
+    course: RawCourse | null,
+    instructors: CourseInstructor[] = [],
+  ) => {
     if (!course) return null;
 
     const title = escapeHtml(course.title?.trim() || "Untitled course");
@@ -30,10 +48,7 @@ export default function useHTML() {
       course.description?.trim() || "No description available for this course.",
     );
     const thumbnail = escapeHtml(getThumbnail(course));
-    const instructorName = escapeHtml(getInstructorName(course));
-    const instructorAvatar = escapeHtml(
-      getInstructorAvatarUrl(getInstructorName(course)),
-    );
+    const instructorsHtml = buildInstructorsHtml(instructors);
     const category = course.category
       ? escapeHtml(course.category.replace(/-/g, " "))
       : "";
@@ -142,40 +157,45 @@ export default function useHTML() {
       margin-bottom: 28px;
     }
 
-    .instructor-card {
+    .instructors-row {
       display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 28px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .instructors-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .instructor-item {
+      flex: 0 0 auto;
+      width: 88px;
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 14px;
-      padding: 16px;
-      background: #ffffff;
-      border: 1px solid #E2E8F0;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+      gap: 8px;
+      text-align: center;
     }
 
     .instructor-avatar {
-      width: 56px;
-      height: 56px;
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid #DBEAFE;
       flex-shrink: 0;
-    }
-
-    .instructor-meta {
-      min-width: 0;
-    }
-
-    .instructor-label {
-      font-size: 12px;
-      color: #64748B;
-      margin-bottom: 2px;
+      background: #EFF6FF;
     }
 
     .instructor-name {
-      font-size: 16px;
+      font-size: 13px;
       font-weight: 700;
       color: #0F172A;
+      line-height: 1.3;
       word-break: break-word;
     }
 
@@ -269,18 +289,7 @@ export default function useHTML() {
     <div class="section-label">About this course</div>
     <p class="description">${description}</p>
 
-    <div class="section-label">Instructor</div>
-    <div class="instructor-card">
-      <img
-        class="instructor-avatar"
-        src="${instructorAvatar}"
-        alt="${instructorName}"
-      />
-      <div class="instructor-meta">
-        <div class="instructor-label">Taught by</div>
-        <div class="instructor-name">${instructorName}</div>
-      </div>
-    </div>
+    ${instructorsHtml}
   </div>
 
   <div class="action-bar">
