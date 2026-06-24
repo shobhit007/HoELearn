@@ -1,11 +1,6 @@
 import { ThemedText } from "@/components/themed-text";
 import { ReactNode } from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  View,
-} from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type AuthScreenLayoutProps = {
@@ -24,7 +19,7 @@ export default function AuthScreenLayout({
   return (
     <SafeAreaView className="flex-1 bg-background">
       <KeyboardAvoidingView
-        className="flex-1"
+        style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <ScrollView
@@ -46,7 +41,11 @@ export default function AuthScreenLayout({
               {subtitle ? (
                 <ThemedText
                   type="small"
-                  style={{ color: "#64748B", marginTop: 8, textAlign: "center" }}
+                  style={{
+                    color: "#64748B",
+                    marginTop: 8,
+                    textAlign: "center",
+                  }}
                 >
                   {subtitle}
                 </ThemedText>
@@ -57,7 +56,9 @@ export default function AuthScreenLayout({
               {children}
             </View>
 
-            {footer ? <View className="mt-6 items-center">{footer}</View> : null}
+            {footer ? (
+              <View className="mt-6 items-center">{footer}</View>
+            ) : null}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
